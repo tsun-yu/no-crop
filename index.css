@@ -1,0 +1,828 @@
+:root {
+    /* --- Material You - Google Blue Palette --- */
+    --m3-primary: #0b57d0;
+    --m3-on-primary: #ffffff;
+    --m3-primary-container: #d8e2ff;
+    --m3-on-primary-container: #001945;
+
+    --m3-secondary: #535f70;
+    --m3-on-secondary: #ffffff;
+    --m3-secondary-container: #d7e3f8;
+    --m3-on-secondary-container: #101c2b;
+
+    --m3-tertiary: #6b5778;
+    --m3-on-tertiary: #ffffff;
+    --m3-tertiary-container: #f2daff;
+    --m3-on-tertiary-container: #251431;
+
+    --m3-error: #ba1a1a;
+    --m3-on-error: #ffffff;
+    --m3-error-container: #ffdad6;
+    --m3-on-error-container: #410002;
+
+    --m3-background: #fcfcff;
+    --m3-on-background: #1a1c1e;
+    --m3-surface: #fcfcff;
+    --m3-on-surface: #1a1c1e;
+    --m3-surface-variant: #e1e2ec;
+    --m3-on-surface-variant: #44474e;
+
+    --m3-outline: #74777f;
+    --m3-outline-variant: #c4c6cf;
+
+    --m3-shadow-color: #000000;
+    --m3-scrim: rgba(0, 0, 0, 0.4);
+
+    --m3-elevation-1: 0px 1px 2px rgba(0, 0, 0, 0.3),
+        0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+    --m3-elevation-2: 0px 1px 2px rgba(0, 0, 0, 0.3),
+        0px 2px 6px 2px rgba(0, 0, 0, 0.15);
+
+    --m3-border-radius-xs: 4px;
+    --m3-border-radius-s: 8px;
+    --m3-border-radius-m: 12px;
+    --m3-border-radius-l: 16px;
+    --m3-border-radius-xl: 28px;
+    --m3-border-radius-full: 999px;
+
+    --m3-font-family: "Roboto", system-ui, sans-serif;
+    --m3-font-headline-m: 1.75rem;
+    --m3-font-title-l: 1.375rem;
+    --m3-font-label-l: 0.875rem;
+    --m3-font-label-m: 0.75rem;
+    --m3-font-body-l: 1rem;
+    --m3-font-body-m: 0.875rem;
+    --m3-font-weight-regular: 400;
+    --m3-font-weight-medium: 500;
+
+    --m3-spacing-xs: 4px;
+    --m3-spacing-s: 8px;
+    --m3-spacing-m: 16px;
+    --m3-spacing-l: 24px;
+
+    --m3-state-hover-opacity: 0.08;
+    --m3-state-focus-opacity: 0.12;
+    --m3-state-pressed-opacity: 0.12;
+    --m3-state-disabled-opacity: 0.12;
+    --m3-state-disabled-content-opacity: 0.38;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--m3-font-family);
+    margin: 0;
+    padding: var(--m3-spacing-l);
+    background-color: var(--m3-background);
+    color: var(--m3-on-background);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    line-height: 1.5;
+    font-size: var(--m3-font-body-l);
+}
+
+.editor-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--m3-spacing-l);
+    background-color: var(--m3-surface);
+    padding: var(--m3-spacing-l);
+    border-radius: var(--m3-border-radius-l);
+    border: 1px solid var(--m3-outline-variant);
+    max-width: 1100px;
+    width: 95%;
+}
+
+.controls-panel {
+    flex: 1;
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--m3-spacing-l);
+}
+
+.preview-panel {
+    flex: 1.8;
+    min-width: 320px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--m3-surface);
+    /* Changed to surface */
+    border: 1px solid var(--m3-outline-variant);
+    border-radius: var(--m3-border-radius-l);
+    padding: var(--m3-spacing-m);
+    min-height: 350px;
+    /* Adjusted min-height */
+    position: relative;
+    overflow: hidden;
+    /* Prevents potential overflow issues */
+}
+
+h1 {
+    width: 100%;
+    text-align: center;
+    color: var(--m3-on-surface);
+    margin: 0 0 var(--m3-spacing-m) 0;
+    font-size: var(--m3-font-headline-m);
+    font-weight: var(--m3-font-weight-regular);
+    line-height: 1.2;
+}
+
+.control-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--m3-spacing-s);
+}
+
+.group-label,
+label[data-role="group-label"] {
+    color: var(--m3-on-surface);
+    font-size: var(--m3-font-body-m);
+    font-weight: var(--m3-font-weight-regular);
+    padding-left: var(--m3-spacing-xs);
+    margin-bottom: var(--m3-spacing-xs);
+}
+
+/* --- M3 Buttons --- */
+button,
+.file-input-button-span {
+    /* Base style for all buttons & the span */
+    font-family: var(--m3-font-family);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    padding: 0 var(--m3-spacing-l);
+    font-size: var(--m3-font-label-l);
+    font-weight: var(--m3-font-weight-medium);
+    border-radius: var(--m3-border-radius-full);
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease,
+        transform 0.1s ease;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    user-select: none;
+    outline: none;
+}
+
+/* State Layer */
+button::before,
+.file-input-button-span::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: currentColor;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    border-radius: inherit;
+    pointer-events: none;
+    /* IMPORTANT: State layer must not block events */
+}
+
+button:hover::before,
+.file-input-button-span:hover::before {
+    opacity: var(--m3-state-hover-opacity);
+}
+
+button:focus-visible::before,
+.file-input-button-span:focus-visible::before {
+    opacity: var(--m3-state-focus-opacity);
+    /* Add outline for focus visibility */
+    outline: 2px solid var(--m3-primary);
+    outline-offset: 2px;
+}
+
+button:active::before,
+.file-input-button-span:active::before {
+    opacity: var(--m3-state-pressed-opacity);
+}
+
+button:active:not(:disabled),
+.file-input-button-span:active {
+    transform: scale(0.98);
+}
+
+/* Filled Button Specifics */
+#downloadButton,
+.file-input-button-span {
+    background-color: var(--m3-primary);
+    color: var(--m3-on-primary);
+    box-shadow: var(--m3-elevation-1);
+}
+
+#downloadButton:hover,
+.file-input-button-span:hover {
+    box-shadow: var(--m3-elevation-2);
+}
+
+/* Tonal Button Specifics */
+#resetButton {
+    background-color: var(--m3-secondary-container);
+    color: var(--m3-on-secondary-container);
+}
+
+/* --- Custom File Input --- */
+.file-input-wrapper {
+    position: relative;
+    /* Needed for absolute positioning of input */
+    display: block;
+    /* Take up block space */
+    height: 40px;
+    /* Match button height */
+    border-radius: var(--m3-border-radius-full);
+    /* Match button rounding */
+}
+
+#photoInput {
+    /* Visually Hidden Input - MUST be ON TOP */
+    position: absolute;
+    inset: 0;
+    /* Cover the entire wrapper */
+    opacity: 0;
+    /* Make it invisible */
+    cursor: pointer;
+    /* Show pointer cursor */
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    /* Remove any default padding */
+    margin: 0;
+    /* Remove any default margin */
+    border: none;
+    /* Remove any default border */
+    z-index: 2;
+}
+
+#photoInput:focus-visible+.file-input-button-span {
+    /* Style the span when the hidden input receives focus */
+    outline: 2px solid var(--m3-primary);
+    outline-offset: 2px;
+}
+
+.file-input-button-span {
+    /* Visible Button Span - MUST be UNDER the input */
+    width: 100%;
+    /* Ensure span fills the wrapper */
+    height: 100%;
+    z-index: 1;
+    /* Align text */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    /* Prevent text selection */
+    user-select: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-left: var(--m3-spacing-l);
+    /* Ensure padding consistency */
+    padding-right: var(--m3-spacing-l);
+}
+
+/* --- M3 Text Field / Select (Filled Style) --- */
+.input-container {
+    position: relative;
+    background-color: color-mix(in srgb,
+            var(--m3-on-surface) 4%,
+            var(--m3-surface));
+    border-radius: var(--m3-border-radius-xs) var(--m3-border-radius-xs) 0 0;
+    border-bottom: 1px solid var(--m3-on-surface-variant);
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+    overflow: hidden;
+    /* Clip contents */
+    height: 56px;
+    /* Set fixed height */
+    display: flex;
+    /* Use flex for alignment */
+    align-items: center;
+    /* Vertically center content */
+}
+
+.input-container:hover {
+    background-color: color-mix(in srgb,
+            var(--m3-on-surface) 8%,
+            var(--m3-surface));
+    border-bottom-color: var(--m3-on-surface);
+}
+
+.input-container:focus-within {
+    border-bottom: 2px solid var(--m3-primary);
+    background-color: color-mix(in srgb,
+            var(--m3-on-surface) 8%,
+            var(--m3-surface));
+}
+
+.input-container:focus-within label {
+    /* Label animation (optional) */
+    color: var(--m3-primary);
+}
+
+input[type="number"],
+select {
+    font-family: var(--m3-font-family);
+    font-size: var(--m3-font-body-l);
+    color: var(--m3-on-surface);
+    padding: var(--m3-spacing-m);
+    padding-top: calc(var(--m3-spacing-m) + 8px);
+    /* Adjust padding for label space */
+    padding-bottom: calc(var(--m3-spacing-m) - 8px);
+    height: 100%;
+    /* Fill container height */
+    border: none;
+    background-color: transparent;
+    width: 100%;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    outline: none;
+    position: relative;
+    z-index: 1;
+}
+
+/* Adjust padding when focused for border */
+.input-container:focus-within input[type="number"],
+.input-container:focus-within select {
+    /* Padding needs slight adjustment due to thicker border */
+    /* padding-bottom: calc(var(--m3-spacing-m) - 1px); */
+}
+
+.select-wrapper {
+    position: relative;
+}
+
+.select-wrapper::after {
+    content: "";
+    position: absolute;
+    right: var(--m3-spacing-m);
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid var(--m3-on-surface-variant);
+    pointer-events: none;
+    z-index: 0;
+    /* Behind select */
+}
+
+select {
+    padding-right: calc(var(--m3-spacing-m) * 2 + 12px);
+    /* Space for arrow */
+    cursor: pointer;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+    /* Firefox */
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Combined Number Input + % sign */
+.scale-input-group {
+    display: flex;
+    align-items: center;
+    position: relative;
+    background-color: color-mix(in srgb,
+            var(--m3-on-surface) 4%,
+            var(--m3-surface));
+    border-radius: var(--m3-border-radius-xs) var(--m3-border-radius-xs) 0 0;
+    border-bottom: 1px solid var(--m3-on-surface-variant);
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+    height: 56px;
+    overflow: hidden;
+}
+
+.scale-input-group:hover {
+    background-color: color-mix(in srgb,
+            var(--m3-on-surface) 8%,
+            var(--m3-surface));
+    border-bottom-color: var(--m3-on-surface);
+}
+
+.scale-input-group:focus-within {
+    border-bottom: 2px solid var(--m3-primary);
+    background-color: color-mix(in srgb,
+            var(--m3-on-surface) 8%,
+            var(--m3-surface));
+}
+
+.scale-input-group input[type="number"] {
+    flex-grow: 1;
+    height: 100%;
+    /* Adjust padding to align text better */
+    padding-top: calc(var(--m3-spacing-m) + 8px);
+    padding-bottom: calc(var(--m3-spacing-m) - 8px);
+    border: none !important;
+    /* Override potential conflicts */
+    outline: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    /* Ensure transparency */
+}
+
+/* Remove specific focus padding adjustment if base padding works */
+/* .scale-input-group:focus-within input[type="number"] {
+     padding-bottom: calc(var(--m3-spacing-m) - 1px);
+   } */
+.scale-input-group span {
+    padding: 0 var(--m3-spacing-m);
+    font-size: var(--m3-font-body-l);
+    color: var(--m3-on-surface-variant);
+    line-height: 56px;
+    /* Align with container height */
+    flex-shrink: 0;
+}
+
+/* --- M3 Slider --- */
+.slider-container {
+    display: flex;
+    align-items: center;
+    gap: var(--m3-spacing-m);
+    min-height: 48px;
+    /* Ensure enough clickable area */
+    padding: var(--m3-spacing-xs) 0;
+}
+
+.slider-container label {
+    color: var(--m3-on-surface-variant);
+    font-size: var(--m3-font-body-m);
+    font-weight: var(--m3-font-weight-regular);
+    padding-left: 0;
+    /* Removed default padding */
+    margin-bottom: 0;
+    /* Reset margin */
+    flex-shrink: 0;
+    width: auto;
+    /* Let it size naturally */
+    min-width: 80px;
+    /* Keep minimum width */
+    cursor: default;
+    /* Indicate non-interactive */
+}
+
+input[type="range"] {
+    width: 100%;
+    height: 4px;
+    background-color: var(--m3-surface-variant);
+    border-radius: var(--m3-border-radius-full);
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    outline: none;
+    transition: background-color 0.2s ease;
+    flex-grow: 1;
+}
+
+input[type="range"]:hover {
+    /* Maybe not change bg on hover, rely on thumb state */
+    /* background-color: var(--m3-outline-variant); */
+}
+
+/* --- Slider Thumb --- */
+input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    background-color: var(--m3-primary);
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    margin-top: -8px;
+    /* (track height - thumb height) / 2 */
+    transition: box-shadow 0.2s ease, background-color 0.2s ease,
+        transform 0.1s ease;
+    position: relative;
+    /* Needed for pseudo-elements */
+}
+
+input[type="range"]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background-color: var(--m3-primary);
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    transition: box-shadow 0.2s ease, background-color 0.2s ease,
+        transform 0.1s ease;
+}
+
+/* --- Slider Thumb State Layer (Hover/Focus/Active) --- */
+input[type="range"]::-webkit-slider-thumb::before {
+    content: "";
+    position: absolute;
+    /* Center the state layer */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    /* Recommended size for state layer */
+    height: 40px;
+    background-color: var(--m3-primary);
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.2s ease, transform 0.1s ease;
+    pointer-events: none;
+    /* Must not block thumb interaction */
+    z-index: -1;
+    /* Behind the thumb */
+}
+
+input[type="range"]:hover::-webkit-slider-thumb::before {
+    opacity: var(--m3-state-hover-opacity);
+}
+
+input[type="range"]:focus-visible::-webkit-slider-thumb::before {
+    opacity: var(--m3-state-focus-opacity);
+}
+
+input[type="range"]:active::-webkit-slider-thumb::before {
+    opacity: var(--m3-state-pressed-opacity);
+}
+
+/* Focus outline for non-webkit */
+input[type="range"]:focus-visible::-moz-range-thumb {
+    box-shadow: 0 0 0 10px color-mix(in srgb,
+            var(--m3-primary) calc(var(--m3-state-focus-opacity) * 100%),
+            transparent);
+}
+
+.slider-container .value-display {
+    font-family: var(--m3-font-family);
+    font-weight: var(--m3-font-weight-medium);
+    font-size: var(--m3-font-body-m);
+    color: var(--m3-primary);
+    min-width: 30px;
+    text-align: right;
+    flex-shrink: 0;
+}
+
+/* --- Button Group --- */
+.button-group {
+    display: flex;
+    gap: var(--m3-spacing-s);
+    margin-top: var(--m3-spacing-m);
+    justify-content: flex-start;
+    /* Align buttons to start */
+}
+
+/* --- Preview Area --- */
+#previewCanvas {
+    /* Changed from img to canvas for direct drawing */
+    max-width: 100%;
+    max-height: 500px;
+    /* Use object-fit if it were an img, but canvas scales differently */
+    /* object-fit: contain; */
+    display: block;
+    /* Default display */
+    border-radius: var(--m3-border-radius-m);
+    /* Rounded corners */
+    border: 1px solid var(--m3-outline-variant);
+    /* Subtle border */
+    background-color: var(--m3-surface-variant);
+    /* BG while loading */
+}
+
+#previewPlaceholder {
+    color: var(--m3-on-surface-variant);
+    text-align: center;
+    font-size: var(--m3-font-body-l);
+    padding: var(--m3-spacing-l);
+}
+
+/* Hide placeholder when canvas has content (managed by JS) */
+#previewCanvas:not([data-empty="true"])+#previewPlaceholder {
+    display: none;
+}
+
+#previewCanvas[data-empty="true"] {
+    display: none;
+}
+
+/* --- Disabled States --- */
+/* Style the visible span when the actual input is disabled */
+.file-input-wrapper input[type="file"]:disabled+.file-input-button-span {
+    background-color: color-mix(in srgb,
+            var(--m3-on-surface) var(--m3-state-disabled-opacity),
+            transparent);
+    color: color-mix(in srgb,
+            var(--m3-on-surface) calc(var(--m3-state-disabled-content-opacity) * 100%),
+            transparent);
+    box-shadow: none;
+    cursor: not-allowed;
+}
+
+/* Remove state layer on disabled span */
+.file-input-wrapper input[type="file"]:disabled+.file-input-button-span::before {
+    opacity: 0 !important;
+}
+
+/* Remove focus outline on disabled */
+.file-input-wrapper input[type="file"]:disabled:focus-visible+.file-input-button-span,
+#photoInput:disabled:focus-visible+.file-input-button-span {
+    outline: none;
+}
+
+/* General button disabled */
+button:disabled {
+    background-color: color-mix(in srgb,
+            var(--m3-on-surface) var(--m3-state-disabled-opacity),
+            transparent);
+    color: color-mix(in srgb,
+            var(--m3-on-surface) calc(var(--m3-state-disabled-content-opacity) * 100%),
+            transparent);
+    box-shadow: none;
+    cursor: not-allowed;
+}
+
+button:disabled::before {
+    opacity: 0 !important;
+}
+
+/* Remove focus outline on disabled */
+button:disabled:focus-visible {
+    outline: none;
+}
+
+/* Disabled inputs/selects */
+.input-container:has(input:disabled),
+.input-container:has(select:disabled),
+.scale-input-group:has(input:disabled) {
+    background-color: color-mix(in srgb,
+            var(--m3-on-surface) var(--m3-state-disabled-opacity),
+            transparent) !important;
+    /* Override hover */
+    border-bottom-color: color-mix(in srgb,
+            var(--m3-on-surface) var(--m3-state-disabled-opacity),
+            transparent) !important;
+    pointer-events: none;
+    /* Prevent interaction */
+}
+
+.input-container:has(input:disabled):hover,
+.input-container:has(select:disabled):hover,
+.scale-input-group:has(input:disabled):hover {
+    background-color: color-mix(in srgb,
+            var(--m3-on-surface) var(--m3-state-disabled-opacity),
+            transparent) !important;
+    /* Ensure hover doesn't change bg */
+}
+
+input:disabled,
+select:disabled {
+    color: color-mix(in srgb,
+            var(--m3-on-surface) calc(var(--m3-state-disabled-content-opacity) * 100%),
+            transparent);
+    cursor: not-allowed;
+    -webkit-text-fill-color: color-mix(in srgb,
+            var(--m3-on-surface) calc(var(--m3-state-disabled-content-opacity) * 100%),
+            transparent);
+    /* Ensure text color override */
+    /* Remove pointer cursor on disabled select */
+    cursor: not-allowed !important;
+}
+
+.scale-input-group:has(input:disabled) span {
+    color: color-mix(in srgb,
+            var(--m3-on-surface) calc(var(--m3-state-disabled-content-opacity) * 100%),
+            transparent);
+}
+
+/* Disabled slider */
+input[type="range"]:disabled {
+    background-color: color-mix(in srgb,
+            var(--m3-on-surface) var(--m3-state-disabled-opacity),
+            var(--m3-surface-variant)
+            /* Mix with base color */
+        );
+    cursor: not-allowed;
+}
+
+input[type="range"]:disabled:hover {
+    background-color: color-mix(in srgb,
+            var(--m3-on-surface) var(--m3-state-disabled-opacity),
+            var(--m3-surface-variant));
+}
+
+input[type="range"]:disabled::-webkit-slider-thumb {
+    background-color: color-mix(in srgb,
+            var(--m3-on-surface) calc(var(--m3-state-disabled-content-opacity) * 100%),
+            transparent);
+    border: 2px solid var(--m3-surface);
+    /* Add border like M3 spec */
+    width: 16px;
+    /* Smaller disabled thumb */
+    height: 16px;
+    margin-top: -6px;
+    /* Adjust margin */
+    cursor: not-allowed;
+}
+
+input[type="range"]:disabled::-moz-range-thumb {
+    background-color: color-mix(in srgb,
+            var(--m3-on-surface) calc(var(--m3-state-disabled-content-opacity) * 100%),
+            transparent);
+    border: 2px solid var(--m3-surface);
+    width: 16px;
+    height: 16px;
+    cursor: not-allowed;
+}
+
+/* Hide state layer on disabled thumb */
+input[type="range"]:disabled::-webkit-slider-thumb::before {
+    opacity: 0 !important;
+}
+
+/* Remove focus outline on disabled thumb */
+input[type="range"]:disabled:focus-visible::-webkit-slider-thumb {
+    outline: none;
+}
+
+input[type="range"]:disabled:focus-visible::-moz-range-thumb {
+    box-shadow: none;
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 768px) {
+    body {
+        padding: var(--m3-spacing-m);
+    }
+
+    .editor-container {
+        flex-direction: column;
+        padding: var(--m3-spacing-m);
+        gap: var(--m3-spacing-m);
+    }
+
+    .preview-panel {
+        min-height: 280px;
+        /* Slightly smaller */
+        order: -1;
+        /* Move preview panel to top on small screens */
+    }
+
+    #previewCanvas {
+        max-height: 350px;
+        /* Adjust max height */
+    }
+
+    h1 {
+        font-size: 1.5em;
+        /* Slightly smaller title */
+    }
+
+    .button-group {
+        flex-direction: column;
+        /* Stack buttons vertically */
+        align-items: stretch;
+        /* Make buttons full width */
+    }
+
+    .slider-container {
+        flex-wrap: wrap;
+        /* Allow wrapping if needed */
+        gap: var(--m3-spacing-s);
+        /* Smaller gap */
+    }
+
+    .slider-container label {
+        min-width: 0;
+        /* Allow label to shrink */
+        width: 100%;
+        /* Make label take full width */
+        margin-bottom: var(--m3-spacing-xs);
+        /* Add space below label */
+        text-align: left;
+    }
+
+    .slider-container input[type="range"] {
+        order: 2;
+        /* Put slider below label */
+        width: calc(100% - 40px);
+        /* Adjust width to fit value display */
+    }
+
+    .slider-container .value-display {
+        order: 3;
+        /* Put value display last */
+        min-width: 30px;
+        /* Ensure space */
+        text-align: right;
+    }
+}
