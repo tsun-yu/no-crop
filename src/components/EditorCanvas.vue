@@ -57,21 +57,26 @@ const cssAspect = computed(() => `${editor.ratio[0]} / ${editor.ratio[1]}`)
  * Phone-only max-width clamp.
  * The wrapper sits inside a sticky container on mobile (App.vue) with a
  * height budget of 45dvh. If we let width go to 100% with a tall ratio
- * (e.g. 9:16), the natural height would blow past 45dvh and eat the rest of
+ * (e.g. 9:16), the natural height would blow past 45svh and eat the rest of
  * the screen — defeating the whole point of having the preview sticky.
  *
- * Solution: derive a max-width that guarantees height = width × ratio ≤ 45dvh.
- *   max-width = 45dvh × (X / Y)
+ * Solution: derive a max-width that guarantees height = width × ratio ≤ 45svh.
+ *   max-width = 45svh × (X / Y)
+ *
+ * We use `svh` (small viewport height) instead of `dvh` so the size stays
+ * constant even when the mobile browser's address bar auto-hides / re-shows.
+ * `svh` always equals the viewport with the bar fully visible — the smallest
+ * it can ever be — so the preview never jumps.
  *
  * Combined with `w-full` on the element, the actual rendered width is
- * `min(100%, 45dvh × X/Y)`. ResizeObserver inside useElementSize picks up
+ * `min(100%, 45svh × X/Y)`. ResizeObserver inside useElementSize picks up
  * the post-clamp width so the renderer outputs at the correct aspect.
  *
- * On sm: breakpoints and up, the value is unset via Tailwind’s sm:max-w-none.
+ * On sm: breakpoints and up, the value is unset via Tailwind's sm:max-w-none.
  */
 const mobileMaxWidth = computed(() => {
   const [rx, ry] = editor.ratio
-  return `calc(45dvh * ${rx} / ${ry})`
+  return `calc(45svh * ${rx} / ${ry})`
 })
 
 let debounceTimer: ReturnType<typeof setTimeout> | null = null
