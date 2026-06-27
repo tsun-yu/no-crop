@@ -35,6 +35,13 @@ export const useEditorStore = defineStore('editor', () => {
   function setSource(bmp: ImageBitmap, filename: string) {
     source.value = markRaw(bmp)
     sourceFilename.value = filename
+    // Clear stale palette — extractColors() will refill it asynchronously.
+    extractedColors.value = []
+  }
+
+  /** Replace the palette extracted from the current image. */
+  function setExtractedColors(colors: string[]) {
+    extractedColors.value = colors
   }
 
   function clearSource() {
@@ -85,6 +92,7 @@ export const useEditorStore = defineStore('editor', () => {
     foregroundScale,
     extractedColors,
     setSource,
+    setExtractedColors,
     clearSource,
     setFill,
     setForegroundScale,

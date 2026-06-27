@@ -24,3 +24,30 @@ export const RATIO_PRESETS = [
 export type RatioPresetId = (typeof RATIO_PRESETS)[number]['id']
 
 export const DEFAULT_RATIO_ID: RatioPresetId = 'square'
+
+/** Hard limits for the custom ratio inputs. */
+export const CUSTOM_RATIO_MIN = 1
+export const CUSTOM_RATIO_MAX = 10_000
+
+/**
+ * Reduce a w:h pair to lowest integer terms via Euclid's gcd.
+ *
+ * Used to display an image's intrinsic ratio neatly — e.g. 1920×1080 → 16:9.
+ * Returns `[1, 1]` if either input is non-positive (defensive fallback).
+ */
+export function reduceRatio(w: number, h: number): readonly [number, number] {
+  const wi = Math.max(0, Math.round(w))
+  const hi = Math.max(0, Math.round(h))
+  if (wi <= 0 || hi <= 0) return [1, 1]
+  const g = gcd(wi, hi)
+  return [wi / g, hi / g]
+}
+
+function gcd(a: number, b: number): number {
+  while (b !== 0) {
+    const t = b
+    b = a % b
+    a = t
+  }
+  return a || 1
+}

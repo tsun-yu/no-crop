@@ -46,9 +46,15 @@ const emit = defineEmits<{
 const reducedMotion = usePreferredReducedMotion()
 
 // ── Track + handle geometry ──────────────────────────────────────────
-const TRACK_HEIGHT = 16 // px reserved for the SVG band (wave amplitude room)
-const MID = TRACK_HEIGHT / 2
+//
+// The SVG band fills the full slider container height so the handle's
+// hover halo (stroke-width 14, outer radius ≈ 17px) is NEVER clipped by
+// the SVG element's default `overflow: hidden` (per SVG2 UA stylesheet).
+// The track line itself is drawn at MID (vertical center).
+const TRACK_BAND_HEIGHT = 40 // px — matches the container's h-10
+const MID = TRACK_BAND_HEIGHT / 2
 const HANDLE_R = 10
+const HOVER_RING_WIDTH = 14
 const WAVE_AMPLITUDE = 3
 const WAVE_WAVELENGTH = 28
 
@@ -212,12 +218,18 @@ function onKeyDown(e: KeyboardEvent) {
     @mouseenter="isHovered = true"
     @mouseleave="isHovered = false"
   >
-    <!-- SVG band centered vertically -->
+    <!--
+      SVG band fills full container height (40px) so the handle's hover
+      ring (~17px outer radius) is never clipped by the SVG element's
+      default overflow:hidden. `overflow="visible"` is a defensive double-
+      lock in case any CSS reset re-enables it.
+    -->
     <svg
       :width="trackWidth"
-      :height="TRACK_HEIGHT"
-      :viewBox="`0 0 ${trackWidth} ${TRACK_HEIGHT}`"
-      class="absolute top-1/2 left-0 -translate-y-1/2"
+      :height="TRACK_BAND_HEIGHT"
+      :viewBox="`0 0 ${trackWidth} ${TRACK_BAND_HEIGHT}`"
+      overflow="visible"
+      class="absolute top-1/2 left-0 -translate-y-1/2 overflow-visible"
       aria-hidden="true"
     >
       <!-- inactive track (right portion) -->
@@ -246,7 +258,7 @@ function onKeyDown(e: KeyboardEvent) {
         fill="var(--md-sys-color-primary)"
         :stroke="isHovered ? 'var(--md-sys-color-primary)' : 'transparent'"
         stroke-opacity="0.12"
-        :stroke-width="isHovered ? 14 : 0"
+        :stroke-width="isHovered ? HOVER_RING_WIDTH : 0"
         class="transition-[r,stroke-width]"
       />
     </svg>

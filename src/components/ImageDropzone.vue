@@ -17,6 +17,7 @@ import { useI18n } from 'vue-i18n'
 import { useImageLoader, type ImageLoadError } from '@/composables/useImageLoader'
 import { useImagePaste, type PasteError } from '@/composables/useImagePaste'
 import { useEditorStore } from '@/stores/editorStore'
+import { extractColors } from '@/render/extractColors'
 import M3Button from './ui/M3Button.vue'
 
 const { t } = useI18n()
@@ -63,10 +64,23 @@ function mapPasteError(err: PasteError): string {
 async function handleFile(file: File | Blob) {
   pasteError.value = null
   const bmp = await load(file)
-  if (bmp) {
-    const name = file instanceof File ? file.name : 'pasted-image.png'
-    editor.setSource(bmp, name)
-  }
+  if (!bmp) return
+  const name = file instanceof File ? file.name : 'pasted-image.png'
+  editor.setSource(bmp, name)
+
+  // Extract a UI-suitable palette in the background. We intentionally don't
+  // await it before showing the editor — the preview can paint first; swatches
+  // appear as soon as quantization finishes (~5–30ms).
+  void extractColors(bmp, { count: 5 })
+    .then((colors) => {
+      // Guard against a stale image swap while quantizing.
+      if (editor.source === bmp && colors.length > 0) {
+        editor.setExtractedColors(colors)
+      }
+    })
+    .catch((err) => {
+      console.warn('[ImageDropzone] extractColors failed:', err)
+    })
 }
 
 const { pasteFromClipboard } = useImagePaste({

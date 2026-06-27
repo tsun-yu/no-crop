@@ -7,9 +7,15 @@
  *
  * The control writes the entire FillState atomically so the renderer never
  * sees an inconsistent { mode: 'solid', intensity: ... } combination.
+ *
+ * Suggested color (req #3):
+ *   When the user switches to Solid mode, we seed the color from the FIRST
+ *   palette entry extracted from the image (same algorithm Material You
+ *   uses — see src/render/extractColors.ts). The user can override at any
+ *   time via the picker or by tapping another swatch.
  */
 
-import { computed } from 'vue'
+import { computed, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useEditorStore, type FillState } from '@/stores/editorStore'
 import M3SegmentedButton from './ui/M3SegmentedButton.vue'
@@ -18,23 +24,31 @@ import M3Slider from './ui/M3Slider.vue'
 const { t } = useI18n()
 const editor = useEditorStore()
 
+/** Neutral fallback used when no image is loaded yet. */
+const FALLBACK_SOLID = '#1F1A2E'
+
 const modeOptions = computed(() => [
   { value: 'solid' as const, label: t('fill.mode.solid') },
   { value: 'blur' as const, label: t('fill.mode.blur') },
 ])
 
+/** Best guess for an on-brand solid color given the current image. */
+function suggestedSolidColor(): string {
+  return editor.extractedColors[0] ?? FALLBACK_SOLID
+}
+
 function setMode(v: string | number) {
   const mode = v as FillState['mode']
   if (mode === editor.fill.mode) return
   if (mode === 'solid') {
-    editor.setFill({ mode: 'solid', color: '#1F1A2E' })
+    editor.setFill({ mode: 'solid', color: suggestedSolidColor() })
   } else {
     editor.setFill({ mode: 'blur', intensity: 60 })
   }
 }
 
 const solidColor = computed({
-  get: () => (editor.fill.mode === 'solid' ? editor.fill.color : '#1F1A2E'),
+  get: () => (editor.fill.mode === 'solid' ? editor.fill.color : suggestedSolidColor()),
   set: (color: string) => {
     if (editor.fill.mode === 'solid') editor.setFill({ mode: 'solid', color })
   },
@@ -50,6 +64,22 @@ const blurIntensity = computed({
 function selectSwatch(color: string) {
   editor.setFill({ mode: 'solid', color })
 }
+
+/**
+ * If the user is already in Solid mode when colors finish extracting (race
+ * between image-load → extract vs. the user toggling to Solid first), upgrade
+ * the fallback color to the suggested one — but ONLY if they haven't picked
+ * a custom value yet.
+ */
+watch(
+  () => editor.extractedColors[0],
+  (next) => {
+    if (!next) return
+    if (editor.fill.mode !== 'solid') return
+    if (editor.fill.color !== FALLBACK_SOLID) return
+    editor.setFill({ mode: 'solid', color: next })
+  },
+)
 </script>
 
 <template>

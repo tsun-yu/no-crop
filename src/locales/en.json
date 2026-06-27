@@ -46,7 +46,8 @@
     },
     "custom": "Custom",
     "custom_width": "Width",
-    "custom_height": "Height"
+    "custom_height": "Height",
+    "swap": "Swap width and height"
   },
   "fill": {
     "label": "Background fill",

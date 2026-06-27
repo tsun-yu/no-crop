@@ -73,7 +73,7 @@ body {
 
 /* Focus ring using M3 primary color */
 :focus-visible {
-  outline: 2px solid var(--md-sys-color-primary, #6750a4);
+  outline: 2px solid var(--md-sys-color-primary, #1a73e8);
   outline-offset: 2px;
   border-radius: var(--md-sys-shape-corner-extra-small);
 }

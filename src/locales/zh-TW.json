@@ -46,7 +46,8 @@
     },
     "custom": "自訂",
     "custom_width": "寬",
-    "custom_height": "高"
+    "custom_height": "高",
+    "swap": "寬高對調"
   },
   "fill": {
     "label": "背景填充",
