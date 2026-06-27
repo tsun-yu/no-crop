@@ -78,13 +78,13 @@ function onReset() {
 
 <template>
   <section aria-labelledby="export-label" class="flex flex-col gap-4">
-    <!-- Format selector — full-width segmented button so it reads as the
-         primary control for this export section. -->
+    <!-- Format selector. Keep it content-sized so the pill border matches
+         the inner buttons instead of stretching across the card. -->
     <M3SegmentedButton
       :model-value="settings.defaultFormat"
       :options="formatOptions"
       :aria-label="t('export.format.label')"
-      class="self-stretch"
+      class="self-start"
       @update:model-value="(v) => settings.setDefaultFormat(v as ExportFormat)"
     />
 

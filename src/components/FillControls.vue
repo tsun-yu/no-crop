@@ -98,13 +98,13 @@ watch(
 
 <template>
   <section aria-labelledby="fill-label" class="flex flex-col gap-4">
-    <!-- Mode toggle (Solid / Blur) — full-width so it reads as the primary
-         control of this section. -->
+    <!-- Mode toggle (Solid / Blur). Keep it content-sized so the outer border
+         wraps tightly around the buttons. -->
     <M3SegmentedButton
       :model-value="editor.fill.mode"
       :options="modeOptions"
       :aria-label="t('fill.label')"
-      class="self-stretch"
+      class="self-start"
       @update:model-value="setMode"
     />
 
