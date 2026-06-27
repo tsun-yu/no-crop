@@ -51,7 +51,16 @@ const hasImage = computed(() => editor.source !== null)
 
     <!-- Editor ----------------------------------------------------- -->
     <template v-else>
-      <EditorCanvas />
+      <!-- Sticky preview on phones so the canvas stays in view while the
+           user is dragging sliders below. The negative inline margin lets
+           the blurred backdrop bleed to the viewport edges, matching the
+           dropzone’s edge-to-edge feel. On sm: and up the wrapper becomes
+           an ordinary flex item again — desktop has plenty of room. -->
+      <div
+        class="sticky top-0 z-20 -mx-5 border-b border-outline-variant/40 bg-surface/85 px-5 pt-1 pb-3 backdrop-blur-md sm:static sm:mx-0 sm:border-0 sm:bg-transparent sm:p-0 sm:backdrop-blur-none"
+      >
+        <EditorCanvas />
+      </div>
 
       <!-- Frame panel: aspect ratio selection -->
       <M3Card variant="filled">

@@ -53,6 +53,27 @@ const previewPx = computed(() => {
 /** CSS aspect-ratio for the wrapper so layout matches frame shape immediately. */
 const cssAspect = computed(() => `${editor.ratio[0]} / ${editor.ratio[1]}`)
 
+/**
+ * Phone-only max-width clamp.
+ * The wrapper sits inside a sticky container on mobile (App.vue) with a
+ * height budget of 45dvh. If we let width go to 100% with a tall ratio
+ * (e.g. 9:16), the natural height would blow past 45dvh and eat the rest of
+ * the screen — defeating the whole point of having the preview sticky.
+ *
+ * Solution: derive a max-width that guarantees height = width × ratio ≤ 45dvh.
+ *   max-width = 45dvh × (X / Y)
+ *
+ * Combined with `w-full` on the element, the actual rendered width is
+ * `min(100%, 45dvh × X/Y)`. ResizeObserver inside useElementSize picks up
+ * the post-clamp width so the renderer outputs at the correct aspect.
+ *
+ * On sm: breakpoints and up, the value is unset via Tailwind’s sm:max-w-none.
+ */
+const mobileMaxWidth = computed(() => {
+  const [rx, ry] = editor.ratio
+  return `calc(45dvh * ${rx} / ${ry})`
+})
+
 let debounceTimer: ReturnType<typeof setTimeout> | null = null
 const hasRenderedOnce = ref(false)
 
@@ -130,8 +151,11 @@ const errorMessage = computed(() => {
 <template>
   <div
     ref="container"
-    class="glow-primary relative w-full overflow-hidden rounded-md-xl border border-outline-variant/60 bg-surface-container-low"
-    :style="{ aspectRatio: cssAspect }"
+    class="glow-primary relative mx-auto w-full max-w-(--canvas-mobile-cap) overflow-hidden rounded-md-xl border border-outline-variant/60 bg-surface-container-low sm:max-w-none"
+    :style="{
+      aspectRatio: cssAspect,
+      '--canvas-mobile-cap': mobileMaxWidth,
+    }"
   >
     <!-- The actual visible preview canvas -->
     <canvas v-show="hasImage" ref="canvasEl" class="block h-full w-full" aria-label="Preview" />
