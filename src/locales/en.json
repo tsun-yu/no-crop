@@ -1,0 +1,110 @@
+{
+  "app": {
+    "name": "No Crop",
+    "tagline": "Resize images to any ratio — without cropping.",
+    "privacy": {
+      "chip": "Images never leave your device",
+      "title": "Your photos stay on your device",
+      "body": "All decoding, blurring, color extraction, and exporting happens locally in your browser. No image data is ever uploaded to a server."
+    }
+  },
+  "action": {
+    "download": "Download",
+    "share": "Share",
+    "reset": "Reset",
+    "compare": "Compare",
+    "paste": "Paste",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "close": "Close",
+    "retry": "Retry",
+    "change_image": "Change image",
+    "full_preview": "Full-size preview",
+    "retheme": "Re-theme from image",
+    "open_settings": "Open settings"
+  },
+  "upload": {
+    "dropzone": {
+      "title": "Drop an image here",
+      "hint": "or click to choose · paste with ⌘V"
+    },
+    "button": {
+      "choose": "Choose image",
+      "paste_ios": "Paste from clipboard"
+    }
+  },
+  "ratio": {
+    "label": "Aspect ratio",
+    "preset": {
+      "square": "1:1 Square",
+      "portrait_4_5": "4:5 Portrait",
+      "story_9_16": "9:16 Story",
+      "landscape_16_9": "16:9 Landscape",
+      "linkcard_191_1": "1.91:1 Link card",
+      "tall_3_4": "3:4 Tall",
+      "pin_2_3": "2:3 Pinterest"
+    },
+    "custom": "Custom",
+    "custom_width": "Width",
+    "custom_height": "Height"
+  },
+  "fill": {
+    "label": "Background fill",
+    "mode": {
+      "solid": "Solid color",
+      "blur": "Blurred image"
+    },
+    "solid": {
+      "color_picker": "Pick a color",
+      "from_image": "Colors from image",
+      "recent": "Recent",
+      "reseed_button": "Use this color as app theme"
+    },
+    "blur": {
+      "intensity": "Blur intensity"
+    }
+  },
+  "scale": {
+    "label": "Foreground scale",
+    "unit": "%"
+  },
+  "export": {
+    "format": {
+      "label": "Format",
+      "png": "PNG (lossless)",
+      "jpeg": "JPEG"
+    },
+    "quality": "Quality",
+    "filename": "File name",
+    "full_preview_title": "Full-size preview",
+    "jpeg_hint": "JPEG is lossy. Use quality ≥ 90 for blurred backgrounds; PNG is recommended for solid colors."
+  },
+  "theme": {
+    "label": "Appearance",
+    "system": "System",
+    "light": "Light",
+    "dark": "Dark",
+    "system_effective_light": "System · Light",
+    "system_effective_dark": "System · Dark"
+  },
+  "locale": {
+    "label": "Language",
+    "zh_tw": "繁體中文",
+    "en": "English"
+  },
+  "settings": {
+    "title": "Settings",
+    "default_format": "Default export format",
+    "default_quality": "Default JPEG quality",
+    "version": "Version"
+  },
+  "error": {
+    "image_too_large": "This image is too large for your device. Please use a smaller one.",
+    "heic_decode_failed": "Couldn't decode this HEIC file. Try JPEG or PNG.",
+    "canvas_unavailable": "Canvas is not available in this browser.",
+    "unsupported_format": "Unsupported file format. Supported: JPEG, PNG, WebP, HEIC.",
+    "clipboard_empty": "No image found on the clipboard.",
+    "clipboard_denied": "Clipboard access was denied.",
+    "generic": "Something went wrong. Please try again."
+  }
+}

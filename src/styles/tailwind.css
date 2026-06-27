@@ -1,0 +1,84 @@
+@import 'tailwindcss';
+
+/* Tailwind v4: dark variant tied to .dark class on <html> */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/**
+ * Map M3 design tokens to Tailwind theme tokens.
+ *
+ * `inline` keeps the var() references intact so utilities like `bg-primary`
+ * pick up the runtime CSS variables (which are re-injected by applyTheme()
+ * when the seed or color scheme changes).
+ */
+@theme inline {
+  /* ── Colors (injected at runtime by applyTheme.ts) ─────────────── */
+  --color-primary: var(--md-sys-color-primary);
+  --color-on-primary: var(--md-sys-color-on-primary);
+  --color-primary-container: var(--md-sys-color-primary-container);
+  --color-on-primary-container: var(--md-sys-color-on-primary-container);
+
+  --color-secondary: var(--md-sys-color-secondary);
+  --color-on-secondary: var(--md-sys-color-on-secondary);
+  --color-secondary-container: var(--md-sys-color-secondary-container);
+  --color-on-secondary-container: var(--md-sys-color-on-secondary-container);
+
+  --color-tertiary: var(--md-sys-color-tertiary);
+  --color-on-tertiary: var(--md-sys-color-on-tertiary);
+  --color-tertiary-container: var(--md-sys-color-tertiary-container);
+  --color-on-tertiary-container: var(--md-sys-color-on-tertiary-container);
+
+  --color-error: var(--md-sys-color-error);
+  --color-on-error: var(--md-sys-color-on-error);
+  --color-error-container: var(--md-sys-color-error-container);
+  --color-on-error-container: var(--md-sys-color-on-error-container);
+
+  --color-background: var(--md-sys-color-background);
+  --color-on-background: var(--md-sys-color-on-background);
+
+  --color-surface: var(--md-sys-color-surface);
+  --color-on-surface: var(--md-sys-color-on-surface);
+  --color-surface-variant: var(--md-sys-color-surface-variant);
+  --color-on-surface-variant: var(--md-sys-color-on-surface-variant);
+  --color-surface-dim: var(--md-sys-color-surface-dim);
+  --color-surface-bright: var(--md-sys-color-surface-bright);
+  --color-surface-container-lowest: var(--md-sys-color-surface-container-lowest);
+  --color-surface-container-low: var(--md-sys-color-surface-container-low);
+  --color-surface-container: var(--md-sys-color-surface-container);
+  --color-surface-container-high: var(--md-sys-color-surface-container-high);
+  --color-surface-container-highest: var(--md-sys-color-surface-container-highest);
+
+  --color-inverse-surface: var(--md-sys-color-inverse-surface);
+  --color-inverse-on-surface: var(--md-sys-color-inverse-on-surface);
+  --color-inverse-primary: var(--md-sys-color-inverse-primary);
+
+  --color-outline: var(--md-sys-color-outline);
+  --color-outline-variant: var(--md-sys-color-outline-variant);
+
+  --color-shadow: var(--md-sys-color-shadow);
+  --color-scrim: var(--md-sys-color-scrim);
+
+  /* ── Shape radii ─────────────────────────────────────────────── */
+  --radius-md-xs: var(--md-sys-shape-corner-extra-small);
+  --radius-md-sm: var(--md-sys-shape-corner-small);
+  --radius-md-md: var(--md-sys-shape-corner-medium);
+  --radius-md-lg: var(--md-sys-shape-corner-large);
+  --radius-md-xl: var(--md-sys-shape-corner-extra-large);
+  --radius-md-full: var(--md-sys-shape-corner-full);
+
+  /* ── Elevation shadows ───────────────────────────────────────── */
+  --shadow-md-elev-1: var(--md-sys-elevation-level1);
+  --shadow-md-elev-2: var(--md-sys-elevation-level2);
+  --shadow-md-elev-3: var(--md-sys-elevation-level3);
+  --shadow-md-elev-4: var(--md-sys-elevation-level4);
+  --shadow-md-elev-5: var(--md-sys-elevation-level5);
+
+  /* ── Font families ────────────────────────────────────────────── */
+  --font-sans: var(--md-sys-typescale-font-plain);
+  --font-brand: var(--md-sys-typescale-font-brand);
+
+  /* ── Easings (Tailwind v4 token: --ease-*) ────────────────────── */
+  --ease-md-standard: var(--md-sys-motion-easing-standard);
+  --ease-md-emphasized: var(--md-sys-motion-easing-emphasized);
+  --ease-md-emphasized-decelerate: var(--md-sys-motion-easing-emphasized-decelerate);
+  --ease-md-emphasized-accelerate: var(--md-sys-motion-easing-emphasized-accelerate);
+}

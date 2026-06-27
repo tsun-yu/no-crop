@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover"
+    />
+    <title>No Crop</title>
+    <meta name="description" content="Resize images to any aspect ratio without cropping." />
+
+    <!-- Theme color: synced with M3 surface for light / dark -->
+    <meta name="theme-color" content="#FFFBFE" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#1C1B1F" media="(prefers-color-scheme: dark)" />
+
+    <!-- iOS PWA -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="No Crop" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- FOUC blocking script: must run before any stylesheet to set .dark class -->
+    <script>
+      (function () {
+        try {
+          var p = localStorage.getItem('nocrop:color-scheme')
+          var dark =
+            p === 'dark' ||
+            ((!p || p === 'auto') && matchMedia('(prefers-color-scheme: dark)').matches)
+          var root = document.documentElement
+          root.classList.toggle('dark', dark)
+          // 第一個畫面禁過渡，避免初次套用主題時閃動
+          root.classList.add('no-transitions')
+          requestAnimationFrame(function () {
+            requestAnimationFrame(function () {
+              root.classList.remove('no-transitions')
+            })
+          })
+        } catch (e) {
+          /* localStorage 可能被禁用，忽略即可 */
+        }
+      })()
+    </script>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

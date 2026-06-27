@@ -1,0 +1,50 @@
+{
+  "name": "no-crop-ai",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Resize images to any aspect ratio without cropping — pure-client, WYSIWYG, Material 3 Expressive.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc --build && vite build",
+    "preview": "vite preview",
+    "type-check": "vue-tsc --build",
+    "lint": "eslint . --ext .ts,.vue --fix",
+    "format": "prettier --write \"src/**/*.{ts,vue,css,json}\" \"*.{json,md}\"",
+    "test": "vitest",
+    "generate-pwa-assets": "pwa-assets-generator"
+  },
+  "dependencies": {
+    "@material/material-color-utilities": "^0.3.0",
+    "@vueuse/core": "^12.5.0",
+    "colorthief": "^2.6.0",
+    "heic2any": "^0.0.4",
+    "motion-v": "^1.7.0",
+    "pinia": "^2.3.0",
+    "stackblur-canvas": "^2.7.0",
+    "vue": "^3.5.13",
+    "vue-i18n": "^11.0.1"
+  },
+  "devDependencies": {
+    "@intlify/unplugin-vue-i18n": "^6.0.5",
+    "@tailwindcss/vite": "^4.0.0",
+    "@types/node": "^22.10.0",
+    "@vite-pwa/assets-generator": "^0.2.6",
+    "@vitejs/plugin-vue": "^5.2.1",
+    "@vue/eslint-config-prettier": "^10.1.0",
+    "@vue/eslint-config-typescript": "^14.1.4",
+    "@vue/test-utils": "^2.4.6",
+    "@vue/tsconfig": "^0.7.0",
+    "eslint": "^9.16.0",
+    "eslint-plugin-vue": "^9.32.0",
+    "jsdom": "^25.0.1",
+    "prettier": "^3.4.1",
+    "prettier-plugin-tailwindcss": "^0.6.9",
+    "tailwindcss": "^4.0.0",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.3",
+    "vite-plugin-pwa": "^0.21.1",
+    "vitest": "^2.1.8",
+    "vue-tsc": "^2.1.10"
+  }
+}

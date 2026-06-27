@@ -1,0 +1,110 @@
+{
+  "app": {
+    "name": "No Crop",
+    "tagline": "把任意比例的圖片變成正方形，不裁切。",
+    "privacy": {
+      "chip": "圖片不離開您的裝置",
+      "title": "您的照片只留在裝置上",
+      "body": "所有解碼、模糊、取色與匯出都在瀏覽器本地完成，沒有任何圖片資料會上傳到伺服器。"
+    }
+  },
+  "action": {
+    "download": "下載",
+    "share": "分享",
+    "reset": "重設",
+    "compare": "比較原圖",
+    "paste": "貼上",
+    "cancel": "取消",
+    "confirm": "確認",
+    "close": "關閉",
+    "retry": "重試",
+    "change_image": "更換圖片",
+    "full_preview": "真實預覽",
+    "retheme": "以本圖配色",
+    "open_settings": "開啟設定"
+  },
+  "upload": {
+    "dropzone": {
+      "title": "拖曳圖片到這裡",
+      "hint": "或點擊選擇 · ⌘V 貼上"
+    },
+    "button": {
+      "choose": "選擇圖片",
+      "paste_ios": "從剪貼簿貼上"
+    }
+  },
+  "ratio": {
+    "label": "輸出比例",
+    "preset": {
+      "square": "1:1 正方形",
+      "portrait_4_5": "4:5 直式",
+      "story_9_16": "9:16 限動",
+      "landscape_16_9": "16:9 橫式",
+      "linkcard_191_1": "1.91:1 連結卡",
+      "tall_3_4": "3:4 高框",
+      "pin_2_3": "2:3 Pinterest"
+    },
+    "custom": "自訂",
+    "custom_width": "寬",
+    "custom_height": "高"
+  },
+  "fill": {
+    "label": "背景填充",
+    "mode": {
+      "solid": "純色",
+      "blur": "模糊圖"
+    },
+    "solid": {
+      "color_picker": "選擇顏色",
+      "from_image": "圖片主題色",
+      "recent": "最近使用",
+      "reseed_button": "以此色為 App 主題"
+    },
+    "blur": {
+      "intensity": "模糊強度"
+    }
+  },
+  "scale": {
+    "label": "前景縮放",
+    "unit": "%"
+  },
+  "export": {
+    "format": {
+      "label": "格式",
+      "png": "PNG (無損)",
+      "jpeg": "JPEG"
+    },
+    "quality": "品質",
+    "filename": "檔案名稱",
+    "full_preview_title": "真實預覽",
+    "jpeg_hint": "JPEG 為有損格式，模糊背景建議使用品質 90 以上;純色背景建議使用 PNG。"
+  },
+  "theme": {
+    "label": "主題",
+    "system": "系統",
+    "light": "淺色",
+    "dark": "深色",
+    "system_effective_light": "系統 · 淺色",
+    "system_effective_dark": "系統 · 深色"
+  },
+  "locale": {
+    "label": "語言",
+    "zh_tw": "繁體中文",
+    "en": "English"
+  },
+  "settings": {
+    "title": "設定",
+    "default_format": "預設匯出格式",
+    "default_quality": "預設 JPEG 品質",
+    "version": "版本"
+  },
+  "error": {
+    "image_too_large": "這張圖片過大，您的裝置無法處理。請改用較小的圖。",
+    "heic_decode_failed": "無法解碼此 HEIC 檔。請改用 JPEG 或 PNG。",
+    "canvas_unavailable": "此瀏覽器不支援 Canvas。",
+    "unsupported_format": "不支援的檔案格式。支援:JPEG, PNG, WebP, HEIC。",
+    "clipboard_empty": "剪貼簿內沒有圖片。",
+    "clipboard_denied": "剪貼簿存取被拒絕。",
+    "generic": "發生錯誤,請再試一次。"
+  }
+}
