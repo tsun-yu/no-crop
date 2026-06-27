@@ -8,8 +8,14 @@
       "body": "所有解碼、模糊、取色與匯出都在瀏覽器本地完成，沒有任何圖片資料會上傳到伺服器。"
     }
   },
+  "section": {
+    "frame": "尺寸",
+    "look": "外觀",
+    "export": "匯出"
+  },
   "action": {
     "download": "下載",
+    "downloading": "準備中…",
     "share": "分享",
     "reset": "重設",
     "compare": "比較原圖",
@@ -70,6 +76,7 @@
     "unit": "%"
   },
   "export": {
+    "output_size": "輸出尺寸",
     "format": {
       "label": "格式",
       "png": "PNG (無損)",

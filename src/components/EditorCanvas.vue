@@ -130,7 +130,7 @@ const errorMessage = computed(() => {
 <template>
   <div
     ref="container"
-    class="relative w-full overflow-hidden rounded-md-lg border border-outline-variant bg-surface-container-low"
+    class="glow-primary relative w-full overflow-hidden rounded-md-xl border border-outline-variant/60 bg-surface-container-low"
     :style="{ aspectRatio: cssAspect }"
   >
     <!-- The actual visible preview canvas -->
@@ -139,19 +139,34 @@ const errorMessage = computed(() => {
     <!-- Idle state -->
     <div
       v-if="!hasImage"
-      class="absolute inset-0 flex flex-col items-center justify-center gap-2 text-sm text-on-surface-variant"
+      class="absolute inset-0 flex flex-col items-center justify-center gap-3 text-on-surface-variant/80"
     >
-      <span class="text-4xl" aria-hidden="true">📐</span>
-      <span>Preview will appear here</span>
+      <div class="grid h-14 w-14 place-items-center rounded-md-full bg-secondary-container text-on-secondary-container">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M19 12h-2v3h-3v2h5v-5zM7 9h3V7H5v5h2V9zm14-6H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16.01H3V4.98h18v14.03z" />
+        </svg>
+      </div>
+      <span class="text-sm">Preview will appear here</span>
     </div>
 
     <!-- Rendering indicator -->
-    <div
-      v-if="isRendering && hasImage"
-      class="absolute top-2 right-2 rounded-full bg-scrim/20 px-2 py-1 text-xs text-on-surface backdrop-blur-sm"
+    <Transition
+      enter-active-class="transition-opacity duration-150 ease-md-standard"
+      leave-active-class="transition-opacity duration-200 ease-md-standard"
+      enter-from-class="opacity-0"
+      leave-to-class="opacity-0"
     >
-      …
-    </div>
+      <div
+        v-if="isRendering && hasImage"
+        class="absolute top-2 right-2 inline-flex items-center gap-1.5 rounded-md-full bg-surface/80 px-2.5 py-1 text-xs font-medium text-on-surface shadow-md-elev-1 backdrop-blur-md"
+      >
+        <span
+          class="h-1.5 w-1.5 animate-pulse rounded-full bg-primary"
+          aria-hidden="true"
+        />
+        rendering
+      </div>
+    </Transition>
 
     <!-- Error overlay (last error from the renderer) -->
     <div

@@ -8,8 +8,14 @@
       "body": "All decoding, blurring, color extraction, and exporting happens locally in your browser. No image data is ever uploaded to a server."
     }
   },
+  "section": {
+    "frame": "Frame",
+    "look": "Look",
+    "export": "Export"
+  },
   "action": {
     "download": "Download",
+    "downloading": "Preparing…",
     "share": "Share",
     "reset": "Reset",
     "compare": "Compare",
@@ -70,6 +76,7 @@
     "unit": "%"
   },
   "export": {
+    "output_size": "Output size",
     "format": {
       "label": "Format",
       "png": "PNG (lossless)",

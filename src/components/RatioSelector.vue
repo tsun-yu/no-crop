@@ -28,6 +28,7 @@ import {
 } from '@/config/ratios'
 import M3Chip from './ui/M3Chip.vue'
 import M3IconButton from './ui/M3IconButton.vue'
+import Icon from './ui/Icon.vue'
 
 const { t } = useI18n()
 const editor = useEditorStore()
@@ -49,6 +50,15 @@ function intrinsicRatio(): readonly [number, number] {
 const initial = editor.customRatio ?? intrinsicRatio()
 const customW = ref<number>(initial[0])
 const customH = ref<number>(initial[1])
+
+/** Pixel dimensions for the live aspect-ratio mini-preview rectangle. */
+const previewRect = computed(() => {
+  const MAX = 56
+  const w = Math.max(1, customW.value || 1)
+  const h = Math.max(1, customH.value || 1)
+  if (w >= h) return { w: MAX, h: Math.max(8, Math.round((MAX * h) / w)) }
+  return { h: MAX, w: Math.max(8, Math.round((MAX * w) / h)) }
+})
 
 /** When a fresh image arrives AND the user is NOT actively editing custom values,
  *  re-seed the inputs from the new image's intrinsic ratio. */
@@ -126,10 +136,6 @@ function onInputChange() {
 
 <template>
   <section aria-labelledby="ratio-label" class="flex flex-col gap-3">
-    <h3 id="ratio-label" class="text-sm font-medium text-on-surface-variant">
-      {{ t('ratio.label') }}
-    </h3>
-
     <div
       class="-mx-1 flex flex-wrap gap-2 overflow-x-auto px-1 pb-1"
       role="group"
@@ -150,7 +156,7 @@ function onInputChange() {
 
       <!-- Custom chip — opens the inline editor when selected. -->
       <M3Chip :selected="isCustom" :aria-label="t('ratio.custom')" @click="selectCustom">
-        <span aria-hidden="true">⚙︎</span>
+        <Icon name="tune" :size="14" />
         <span>{{ t('ratio.custom') }}</span>
       </M3Chip>
     </div>
@@ -158,53 +164,73 @@ function onInputChange() {
     <!-- Inline custom-ratio editor. Appears below the chip row only when
          Custom is the active selection, so the form doesn't eat space the
          rest of the time. -->
-    <div
-      v-if="isCustom"
-      class="flex flex-wrap items-end gap-3 rounded-md-lg border border-outline-variant bg-surface-container-low p-3"
+    <Transition
+      enter-active-class="transition-all duration-300 ease-md-emphasized origin-top"
+      leave-active-class="transition-all duration-200 ease-md-standard origin-top"
+      enter-from-class="opacity-0 -translate-y-2 scale-y-95"
+      leave-to-class="opacity-0 -translate-y-2 scale-y-95"
     >
-      <label class="flex flex-col gap-1 text-xs text-on-surface-variant">
-        <span>{{ t('ratio.custom_width') }}</span>
-        <input
-          v-model.number="customW"
-          type="number"
-          inputmode="numeric"
-          :min="CUSTOM_RATIO_MIN"
-          :max="CUSTOM_RATIO_MAX"
-          step="1"
-          class="w-24 rounded-md-sm border border-outline-variant bg-surface px-3 py-2 font-mono text-sm text-on-surface tabular-nums focus:border-primary focus:outline-none"
-          :aria-label="t('ratio.custom_width')"
-          @input="onInputChange"
-          @blur="onInputBlur"
-        />
-      </label>
-
-      <span class="pb-2 text-lg font-medium text-on-surface-variant" aria-hidden="true">:</span>
-
-      <label class="flex flex-col gap-1 text-xs text-on-surface-variant">
-        <span>{{ t('ratio.custom_height') }}</span>
-        <input
-          v-model.number="customH"
-          type="number"
-          inputmode="numeric"
-          :min="CUSTOM_RATIO_MIN"
-          :max="CUSTOM_RATIO_MAX"
-          step="1"
-          class="w-24 rounded-md-sm border border-outline-variant bg-surface px-3 py-2 font-mono text-sm text-on-surface tabular-nums focus:border-primary focus:outline-none"
-          :aria-label="t('ratio.custom_height')"
-          @input="onInputChange"
-          @blur="onInputBlur"
-        />
-      </label>
-
-      <M3IconButton
-        variant="tonal"
-        size="sm"
-        :ariaLabel="t('ratio.swap')"
-        class="mb-0.5"
-        @click="swap"
+      <div
+        v-if="isCustom"
+        class="flex flex-wrap items-center gap-4 rounded-md-lg border border-outline-variant/60 bg-surface-container-low p-4"
       >
-        ⇄
-      </M3IconButton>
-    </div>
+        <!-- Live aspect-ratio mini-preview -->
+        <div
+          class="grid h-14 w-14 shrink-0 place-items-center rounded-md-sm bg-surface"
+          aria-hidden="true"
+        >
+          <div
+            class="rounded-sm bg-primary-container ring-1 ring-primary/40 transition-all duration-200 ease-md-standard"
+            :style="{ width: previewRect.w + 'px', height: previewRect.h + 'px' }"
+          />
+        </div>
+
+        <!-- Width input -->
+        <label class="flex flex-col gap-1 text-xs text-on-surface-variant">
+          <span>{{ t('ratio.custom_width') }}</span>
+          <input
+            v-model.number="customW"
+            type="number"
+            inputmode="numeric"
+            :min="CUSTOM_RATIO_MIN"
+            :max="CUSTOM_RATIO_MAX"
+            step="1"
+            class="no-spin w-20 rounded-md-sm border border-outline-variant bg-surface px-3 py-2 text-center font-mono text-sm text-on-surface tabular-nums transition-colors focus:border-primary focus:outline-none"
+            :aria-label="t('ratio.custom_width')"
+            @input="onInputChange"
+            @blur="onInputBlur"
+          />
+        </label>
+
+        <span class="pt-4 text-lg font-medium text-on-surface-variant/70" aria-hidden="true">×</span>
+
+        <!-- Height input -->
+        <label class="flex flex-col gap-1 text-xs text-on-surface-variant">
+          <span>{{ t('ratio.custom_height') }}</span>
+          <input
+            v-model.number="customH"
+            type="number"
+            inputmode="numeric"
+            :min="CUSTOM_RATIO_MIN"
+            :max="CUSTOM_RATIO_MAX"
+            step="1"
+            class="no-spin w-20 rounded-md-sm border border-outline-variant bg-surface px-3 py-2 text-center font-mono text-sm text-on-surface tabular-nums transition-colors focus:border-primary focus:outline-none"
+            :aria-label="t('ratio.custom_height')"
+            @input="onInputChange"
+            @blur="onInputBlur"
+          />
+        </label>
+
+        <M3IconButton
+          variant="tonal"
+          size="sm"
+          :ariaLabel="t('ratio.swap')"
+          class="mt-4"
+          @click="swap"
+        >
+          <Icon name="swap" :size="18" />
+        </M3IconButton>
+      </div>
+    </Transition>
   </section>
 </template>

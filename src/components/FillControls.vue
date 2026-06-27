@@ -2,30 +2,34 @@
 /**
  * FillControls — pick how the area outside the contained image is filled.
  *
- *   Solid → native color picker + extracted swatches (when available)
+ *   Solid → styled color trigger + extracted swatches (when available)
  *   Blur  → M3Slider 0–100 (mapped to a px radius by intensityToRadiusPx)
  *
  * The control writes the entire FillState atomically so the renderer never
  * sees an inconsistent { mode: 'solid', intensity: ... } combination.
  *
- * Suggested color (req #3):
+ * Suggested color:
  *   When the user switches to Solid mode, we seed the color from the FIRST
  *   palette entry extracted from the image (same algorithm Material You
  *   uses — see src/render/extractColors.ts). The user can override at any
  *   time via the picker or by tapping another swatch.
  */
 
-import { computed, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useEditorStore, type FillState } from '@/stores/editorStore'
 import M3SegmentedButton from './ui/M3SegmentedButton.vue'
 import M3Slider from './ui/M3Slider.vue'
+import Icon from './ui/Icon.vue'
 
 const { t } = useI18n()
 const editor = useEditorStore()
 
 /** Neutral fallback used when no image is loaded yet. */
 const FALLBACK_SOLID = '#1F1A2E'
+
+/** Hidden native color input — clicked programmatically from our styled trigger. */
+const nativeColorInput = ref<HTMLInputElement | null>(null)
 
 const modeOptions = computed(() => [
   { value: 'solid' as const, label: t('fill.mode.solid') },
@@ -65,6 +69,16 @@ function selectSwatch(color: string) {
   editor.setFill({ mode: 'solid', color })
 }
 
+/** Open the (visually-hidden) native picker when the user clicks our trigger. */
+function openColorPicker() {
+  nativeColorInput.value?.click()
+}
+
+/** Case-insensitive hex compare so #FFF and #fff count as the same swatch. */
+function isActiveSwatch(c: string): boolean {
+  return solidColor.value.toLowerCase() === c.toLowerCase()
+}
+
 /**
  * If the user is already in Solid mode when colors finish extracting (race
  * between image-load → extract vs. the user toggling to Solid first), upgrade
@@ -84,56 +98,102 @@ watch(
 
 <template>
   <section aria-labelledby="fill-label" class="flex flex-col gap-4">
-    <div class="flex items-center justify-between gap-3">
-      <h3 id="fill-label" class="text-sm font-medium text-on-surface-variant">
-        {{ t('fill.label') }}
-      </h3>
-      <M3SegmentedButton
-        :model-value="editor.fill.mode"
-        :options="modeOptions"
-        :aria-label="t('fill.label')"
-        @update:model-value="setMode"
-      />
-    </div>
+    <!-- Mode toggle (Solid / Blur) — full-width so it reads as the primary
+         control of this section. -->
+    <M3SegmentedButton
+      :model-value="editor.fill.mode"
+      :options="modeOptions"
+      :aria-label="t('fill.label')"
+      class="self-stretch"
+      @update:model-value="setMode"
+    />
 
     <!-- Solid color sub-controls -->
-    <div v-if="editor.fill.mode === 'solid'" class="flex flex-col gap-3">
-      <label class="flex items-center gap-3 text-sm text-on-surface">
+    <div v-if="editor.fill.mode === 'solid'" class="flex flex-col gap-4">
+      <!-- Styled color trigger: replaces the bare native input with a
+           tactile swatch + hex chip + edit affordance. The native picker
+           still drives the value via a visually-hidden input. -->
+      <button
+        type="button"
+        class="group flex items-center gap-3 self-start rounded-md-full border border-outline-variant bg-surface-container-low p-1.5 pr-4 transition-all duration-200 ease-md-standard hover:border-primary/60 hover:shadow-md-elev-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+        :aria-label="t('fill.solid.color_picker')"
+        @click="openColorPicker"
+      >
+        <span
+          class="grid h-9 w-9 place-items-center rounded-full ring-1 ring-outline-variant transition-transform duration-200 ease-md-standard group-hover:scale-105 group-active:scale-95"
+          :style="{ backgroundColor: solidColor }"
+        >
+          <Icon
+            name="palette"
+            :size="14"
+            class="text-white mix-blend-difference opacity-70 transition-opacity group-hover:opacity-100"
+          />
+        </span>
+        <span class="font-mono text-sm uppercase tracking-wider text-on-surface tabular-nums">
+          {{ solidColor }}
+        </span>
         <input
+          ref="nativeColorInput"
           v-model="solidColor"
           type="color"
-          class="h-10 w-14 cursor-pointer rounded-md-md border border-outline-variant bg-transparent"
-          :aria-label="t('fill.solid.color_picker')"
+          class="swatch-input"
+          tabindex="-1"
+          :aria-hidden="true"
         />
-        <span class="font-mono text-xs text-on-surface-variant">{{ solidColor }}</span>
-      </label>
+      </button>
 
       <div v-if="editor.extractedColors.length > 0" class="flex flex-col gap-2">
-        <span class="text-xs text-on-surface-variant">
+        <span class="text-xs font-medium uppercase tracking-wider text-on-surface-variant">
           {{ t('fill.solid.from_image') }}
         </span>
-        <div class="flex flex-wrap gap-2">
+        <div class="flex flex-wrap gap-2.5">
           <button
             v-for="c in editor.extractedColors"
             :key="c"
             type="button"
-            class="h-8 w-8 rounded-md-full border border-outline-variant transition-transform duration-200 ease-md-standard hover:scale-110 active:scale-95"
+            class="relative grid h-10 w-10 place-items-center rounded-full transition-all duration-200 ease-md-standard hover:scale-110 active:scale-95"
+            :class="
+              isActiveSwatch(c)
+                ? 'ring-2 ring-primary ring-offset-2 ring-offset-surface'
+                : 'ring-1 ring-outline-variant'
+            "
             :style="{ backgroundColor: c }"
             :aria-label="c"
-            :aria-pressed="solidColor.toLowerCase() === c.toLowerCase()"
+            :aria-pressed="isActiveSwatch(c)"
             @click="selectSwatch(c)"
-          />
+          >
+            <Transition
+              enter-active-class="transition-all duration-150 ease-md-standard"
+              leave-active-class="transition-all duration-100 ease-md-standard"
+              enter-from-class="opacity-0 scale-50"
+              leave-to-class="opacity-0 scale-50"
+            >
+              <Icon
+                v-if="isActiveSwatch(c)"
+                name="check"
+                :size="16"
+                class="text-white mix-blend-difference drop-shadow"
+              />
+            </Transition>
+          </button>
         </div>
       </div>
     </div>
 
     <!-- Blur sub-control -->
-    <div v-else class="flex flex-col gap-2">
-      <div class="flex items-center justify-between text-sm">
-        <label for="blur-slider" class="text-on-surface-variant">
+    <div v-else class="flex flex-col gap-3">
+      <div class="flex items-center justify-between">
+        <label
+          for="blur-slider"
+          class="text-xs font-medium uppercase tracking-wider text-on-surface-variant"
+        >
           {{ t('fill.blur.intensity') }}
         </label>
-        <span class="font-mono text-on-surface tabular-nums">{{ blurIntensity }}</span>
+        <span
+          class="inline-flex h-7 min-w-12 items-center justify-center rounded-md-full bg-primary-container px-3 font-mono text-sm font-semibold text-on-primary-container tabular-nums"
+        >
+          {{ blurIntensity }}
+        </span>
       </div>
       <M3Slider
         id="blur-slider"

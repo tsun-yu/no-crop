@@ -22,6 +22,7 @@ import { getExportPx } from '@/render/exportSize'
 import { downloadBlob, suggestFilename } from '@/utils/downloadBlob'
 import M3Button from './ui/M3Button.vue'
 import M3SegmentedButton from './ui/M3SegmentedButton.vue'
+import Icon from './ui/Icon.vue'
 
 const { t } = useI18n()
 const editor = useEditorStore()
@@ -76,37 +77,67 @@ function onReset() {
 </script>
 
 <template>
-  <section
-    aria-labelledby="export-label"
-    class="flex flex-col gap-4 border-t border-outline-variant pt-5"
-  >
-    <div class="flex flex-wrap items-center justify-between gap-3">
-      <h3 id="export-label" class="text-sm font-medium text-on-surface-variant">
-        {{ t('export.format.label') }}
-      </h3>
-      <M3SegmentedButton
-        :model-value="settings.defaultFormat"
-        :options="formatOptions"
-        :aria-label="t('export.format.label')"
-        @update:model-value="(v) => settings.setDefaultFormat(v as ExportFormat)"
-      />
+  <section aria-labelledby="export-label" class="flex flex-col gap-4">
+    <!-- Format selector — full-width segmented button so it reads as the
+         primary control for this export section. -->
+    <M3SegmentedButton
+      :model-value="settings.defaultFormat"
+      :options="formatOptions"
+      :aria-label="t('export.format.label')"
+      class="self-stretch"
+      @update:model-value="(v) => settings.setDefaultFormat(v as ExportFormat)"
+    />
+
+    <!-- Output preview row: pixel dimensions + format pill. Stays visible so
+         the user always knows exactly what they're about to download. -->
+    <div
+      class="flex flex-wrap items-center justify-between gap-2 rounded-md-lg bg-surface-container-low px-4 py-3"
+    >
+      <span class="text-xs font-medium uppercase tracking-wider text-on-surface-variant">
+        {{ t('export.output_size') }}
+      </span>
+      <div class="flex items-center gap-2">
+        <span
+          class="inline-flex items-center rounded-md-full bg-primary-container px-3 py-1 font-mono text-sm font-semibold text-on-primary-container tabular-nums"
+        >
+          {{ exportPx.w.toLocaleString() }} × {{ exportPx.h.toLocaleString() }}
+        </span>
+        <span
+          class="inline-flex items-center rounded-md-full bg-secondary-container px-2.5 py-1 text-xs font-semibold uppercase text-on-secondary-container"
+        >
+          {{ settings.defaultFormat }}
+        </span>
+      </div>
     </div>
 
-    <div class="flex flex-wrap items-center justify-between gap-3">
-      <span class="font-mono text-xs text-on-surface-variant">
-        {{ exportPx.w }} × {{ exportPx.h }} px
-      </span>
-      <div class="flex flex-wrap items-center gap-2">
-        <M3Button variant="text" @click="onChangeImage">
-          {{ t('action.change_image') }}
-        </M3Button>
-        <M3Button variant="tonal" @click="onReset">
-          {{ t('action.reset') }}
-        </M3Button>
-        <M3Button variant="filled" :disabled="exporting" @click="onDownload">
-          {{ exporting ? '…' : t('action.download') }}
-        </M3Button>
-      </div>
+    <!-- Primary CTA — full-width filled button with the download glyph. -->
+    <M3Button
+      variant="filled"
+      :disabled="exporting"
+      full-width
+      class="py-3! text-base shadow-md-elev-1 hover:shadow-md-elev-2"
+      @click="onDownload"
+    >
+      <Icon
+        :name="exporting ? 'refresh' : 'download'"
+        :size="20"
+        :class="exporting ? 'animate-spin' : ''"
+      />
+      <span>{{ exporting ? t('action.downloading') : t('action.download') }}</span>
+    </M3Button>
+
+    <!-- Secondary actions — equal-weight text buttons so neither competes
+         with the primary download CTA above. -->
+    <div class="flex items-center justify-center gap-1">
+      <M3Button variant="text" @click="onChangeImage">
+        <Icon name="image" :size="16" />
+        <span>{{ t('action.change_image') }}</span>
+      </M3Button>
+      <span class="text-on-surface-variant/40" aria-hidden="true">·</span>
+      <M3Button variant="text" @click="onReset">
+        <Icon name="refresh" :size="16" />
+        <span>{{ t('action.reset') }}</span>
+      </M3Button>
     </div>
   </section>
 </template>

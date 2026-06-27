@@ -4,16 +4,14 @@
  *
  * Layout:
  *
- *   TopBar (branding + theme + locale)
- *   PrivacyChip
+ *   TopBar (brand mark + theme + locale + integrated privacy chip)
  *   ──────────────────────────────────
  *   ImageDropzone   ← shown when no image loaded
  *      OR
- *   EditorCanvas    ← live WYSIWYG preview
- *   RatioSelector
- *   FillControls
- *   ScaleControl
- *   DownloadBar
+ *   EditorCanvas    ← live WYSIWYG preview, with brand-tinted glow
+ *   M3Card "frame"    → RatioSelector
+ *   M3Card "look"     → FillControls + ScaleControl
+ *   M3Card "export"   → DownloadBar (visually prominent CTA)
  *
  * Every control panel binds directly to editorStore. The store is the only
  * source of truth feeding renderFrame() — that's what makes preview ≡ export.
@@ -31,6 +29,7 @@ import FillControls from '@/components/FillControls.vue'
 import ScaleControl from '@/components/ScaleControl.vue'
 import DownloadBar from '@/components/DownloadBar.vue'
 import M3Card from '@/components/ui/M3Card.vue'
+import Icon from '@/components/ui/Icon.vue'
 
 // Bootstrap the M3 theme (re-applies whenever seed or scheme changes)
 useM3Theme()
@@ -43,17 +42,9 @@ const hasImage = computed(() => editor.source !== null)
 
 <template>
   <main
-    class="safe-area mx-auto flex w-full max-w-3xl flex-1 flex-col gap-6 px-5 py-6 sm:gap-8 sm:px-6 sm:py-8"
+    class="safe-area mx-auto flex w-full max-w-3xl flex-1 flex-col gap-6 px-5 py-6 sm:gap-7 sm:px-6 sm:py-8"
   >
     <TopBar />
-
-    <!-- Privacy chip -->
-    <div
-      class="inline-flex w-fit items-center gap-2 rounded-md-full bg-secondary-container px-4 py-2 text-xs text-on-secondary-container shadow-md-elev-1 sm:text-sm"
-    >
-      <span aria-hidden="true">🔒</span>
-      <span>{{ t('app.privacy.chip') }}</span>
-    </div>
 
     <!-- Empty state ------------------------------------------------ -->
     <ImageDropzone v-if="!hasImage" />
@@ -62,18 +53,46 @@ const hasImage = computed(() => editor.source !== null)
     <template v-else>
       <EditorCanvas />
 
+      <!-- Frame panel: aspect ratio selection -->
       <M3Card variant="filled">
+        <header class="mb-4 flex items-center gap-2 text-on-surface">
+          <Icon name="aspect-ratio" :size="20" class="text-primary" />
+          <h2 class="text-sm font-medium tracking-wide uppercase">
+            {{ t('section.frame') }}
+          </h2>
+        </header>
+        <RatioSelector />
+      </M3Card>
+
+      <!-- Look panel: background fill + foreground scale -->
+      <M3Card variant="filled">
+        <header class="mb-4 flex items-center gap-2 text-on-surface">
+          <Icon name="palette" :size="20" class="text-primary" />
+          <h2 class="text-sm font-medium tracking-wide uppercase">
+            {{ t('section.look') }}
+          </h2>
+        </header>
         <div class="flex flex-col gap-6">
-          <RatioSelector />
           <FillControls />
+          <div class="h-px bg-outline-variant/60" aria-hidden="true" />
           <ScaleControl />
-          <DownloadBar />
         </div>
+      </M3Card>
+
+      <!-- Export panel: format + download CTA -->
+      <M3Card variant="elevated">
+        <header class="mb-4 flex items-center gap-2 text-on-surface">
+          <Icon name="download" :size="20" class="text-primary" />
+          <h2 class="text-sm font-medium tracking-wide uppercase">
+            {{ t('section.export') }}
+          </h2>
+        </header>
+        <DownloadBar />
       </M3Card>
     </template>
 
-    <footer class="mt-auto pt-6 text-center text-xs text-on-surface-variant">
-      No Crop · {{ t('app.tagline') }}
+    <footer class="mt-auto flex flex-col items-center gap-1 pt-6 text-center text-xs text-on-surface-variant/70">
+      <span>No Crop · {{ t('app.tagline') }}</span>
     </footer>
   </main>
 </template>

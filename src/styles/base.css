@@ -77,3 +77,82 @@ body {
   outline-offset: 2px;
   border-radius: var(--md-sys-shape-corner-extra-small);
 }
+
+/**
+ * Soft brand-tinted radial backdrop.
+ *
+ * Two diffuse colored blobs (primary + tertiary), heavily diluted so they
+ * read as a subtle wash rather than a pattern. Sits on top of
+ * `surface` so the theme switch is still pristine, and uses fixed
+ * background-attachment so it doesn't move on scroll.
+ */
+body {
+  background-image:
+    radial-gradient(
+      ellipse 80% 60% at 12% -10%,
+      color-mix(in oklab, var(--md-sys-color-primary) 12%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 70% 60% at 92% 110%,
+      color-mix(in oklab, var(--md-sys-color-tertiary) 10%, transparent),
+      transparent 70%
+    );
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+}
+
+/**
+ * Primary-tinted soft glow for hero surfaces (the preview canvas).
+ * Falls back to a neutral shadow on browsers that lack color-mix.
+ */
+.glow-primary {
+  box-shadow:
+    0 10px 30px -12px color-mix(in oklab, var(--md-sys-color-primary) 32%, transparent),
+    0 2px 10px -4px color-mix(in oklab, var(--md-sys-color-shadow) 30%, transparent);
+}
+@supports not (color: color-mix(in oklab, red, blue)) {
+  .glow-primary {
+    box-shadow:
+      0 10px 30px -12px rgba(26, 115, 232, 0.32),
+      0 2px 10px -4px rgba(0, 0, 0, 0.18);
+  }
+}
+
+/* Hidden native color picker.
+   Visually-zero but still in the layout so .click() can dispatch the OS
+   color dialog. Pointer-events:none keeps mouse hover/focus from leaking
+   onto the bare input (we expose our own styled trigger button). */
+input[type='color'].swatch-input {
+  position: absolute;
+  width: 0;
+  height: 0;
+  padding: 0;
+  border: none;
+  opacity: 0;
+  pointer-events: none;
+  overflow: hidden;
+  -webkit-appearance: none;
+  appearance: none;
+}
+input[type='color'].swatch-input::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+input[type='color'].swatch-input::-webkit-color-swatch {
+  border: none;
+}
+input[type='color'].swatch-input::-moz-color-swatch {
+  border: none;
+}
+
+/* Number-input chrome cleanup */
+input[type='number'].no-spin {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+input[type='number'].no-spin::-webkit-outer-spin-button,
+input[type='number'].no-spin::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+

@@ -22,12 +22,18 @@ const percent = computed({
 </script>
 
 <template>
-  <section aria-labelledby="scale-label" class="flex flex-col gap-2">
-    <div class="flex items-center justify-between text-sm">
-      <label id="scale-label" for="scale-slider" class="text-on-surface-variant">
+  <section aria-labelledby="scale-label" class="flex flex-col gap-3">
+    <div class="flex items-center justify-between">
+      <label
+        id="scale-label"
+        for="scale-slider"
+        class="text-xs font-medium uppercase tracking-wider text-on-surface-variant"
+      >
         {{ t('scale.label') }}
       </label>
-      <span class="font-mono text-on-surface tabular-nums">
+      <span
+        class="inline-flex h-7 min-w-14 items-center justify-center rounded-md-full bg-primary-container px-3 font-mono text-sm font-semibold text-on-primary-container tabular-nums"
+      >
         {{ percent }}{{ t('scale.unit') }}
       </span>
     </div>

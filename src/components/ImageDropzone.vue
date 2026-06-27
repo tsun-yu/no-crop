@@ -19,6 +19,7 @@ import { useImagePaste, type PasteError } from '@/composables/useImagePaste'
 import { useEditorStore } from '@/stores/editorStore'
 import { extractColors } from '@/render/extractColors'
 import M3Button from './ui/M3Button.vue'
+import Icon from './ui/Icon.vue'
 
 const { t } = useI18n()
 const editor = useEditorStore()
@@ -131,38 +132,70 @@ function onPicked(e: Event) {
 
 <template>
   <div
-    class="flex flex-col items-center justify-center gap-4 rounded-md-xl border-2 border-dashed p-10 text-center transition-colors duration-200 ease-md-standard"
+    class="group relative flex flex-col items-center justify-center gap-5 overflow-hidden rounded-md-xl border-2 border-dashed p-10 text-center transition-all duration-300 ease-md-emphasized sm:p-14"
     :class="
       dragging
-        ? 'border-primary bg-primary-container/40'
-        : 'border-outline-variant bg-surface-container'
+        ? 'scale-[1.01] border-primary bg-primary-container/50 shadow-md-elev-3'
+        : 'border-outline-variant bg-surface-container hover:border-outline hover:bg-surface-container-high'
     "
     @dragenter="onDragEnter"
     @dragover="onDragOver"
     @dragleave="onDragLeave"
     @drop="onDrop"
   >
-    <div class="text-6xl" aria-hidden="true">🖼️</div>
-    <h2 class="text-xl font-medium text-on-surface">
-      {{ t('upload.dropzone.title') }}
-    </h2>
-    <p class="text-sm text-on-surface-variant">
-      {{ t('upload.dropzone.hint') }}
-    </p>
+    <!-- Decorative background glyphs (very subtle) -->
+    <div class="pointer-events-none absolute -top-12 -right-12 opacity-10" aria-hidden="true">
+      <Icon name="image" :size="160" class="text-primary" />
+    </div>
+    <div class="pointer-events-none absolute -bottom-10 -left-10 opacity-10" aria-hidden="true">
+      <Icon name="sparkle" :size="120" class="text-tertiary" />
+    </div>
 
-    <div class="mt-2 flex flex-wrap items-center justify-center gap-3">
+    <!-- Hero icon: a tinted disc with a frame glyph -->
+    <div
+      class="relative grid h-20 w-20 place-items-center rounded-md-full bg-primary-container text-primary transition-transform duration-500 ease-md-emphasized"
+      :class="dragging ? 'scale-110' : 'group-hover:scale-105'"
+      aria-hidden="true"
+    >
+      <Icon name="image" :size="40" />
+      <span
+        class="absolute -right-1 -bottom-1 grid h-7 w-7 place-items-center rounded-md-full bg-tertiary-container text-on-tertiary-container shadow-md-elev-1"
+      >
+        <Icon name="plus" :size="18" />
+      </span>
+    </div>
+
+    <div class="relative flex flex-col items-center gap-1">
+      <h2 class="font-brand text-xl font-medium text-on-surface sm:text-2xl">
+        {{ t('upload.dropzone.title') }}
+      </h2>
+      <p class="text-sm text-on-surface-variant">
+        {{ t('upload.dropzone.hint') }}
+      </p>
+    </div>
+
+    <div class="relative mt-1 flex flex-wrap items-center justify-center gap-3">
       <M3Button variant="filled" :disabled="loading" @click="openPicker">
+        <Icon name="image" :size="18" />
         {{ t('upload.button.choose') }}
       </M3Button>
       <M3Button variant="tonal" :disabled="loading" @click="pasteFromClipboard">
+        <Icon name="paste" :size="18" />
         {{ t('action.paste') }}
       </M3Button>
     </div>
 
+    <!-- Supported formats hint -->
+    <p
+      class="relative font-mono text-[11px] tracking-wider text-on-surface-variant/70 uppercase"
+    >
+      JPEG · PNG · WebP · HEIC
+    </p>
+
     <p v-if="loading" class="text-sm text-on-surface-variant" aria-live="polite">…</p>
     <p
       v-if="errorMessage"
-      class="rounded-md-md bg-error-container px-3 py-2 text-sm text-on-error-container"
+      class="relative rounded-md-md bg-error-container px-3 py-2 text-sm text-on-error-container"
       role="alert"
     >
       {{ errorMessage }}
