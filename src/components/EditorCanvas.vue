@@ -141,9 +141,13 @@ const errorMessage = computed(() => {
       v-if="!hasImage"
       class="absolute inset-0 flex flex-col items-center justify-center gap-3 text-on-surface-variant/80"
     >
-      <div class="grid h-14 w-14 place-items-center rounded-md-full bg-secondary-container text-on-secondary-container">
+      <div
+        class="grid h-14 w-14 place-items-center rounded-md-full bg-secondary-container text-on-secondary-container"
+      >
         <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-          <path d="M19 12h-2v3h-3v2h5v-5zM7 9h3V7H5v5h2V9zm14-6H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16.01H3V4.98h18v14.03z" />
+          <path
+            d="M19 12h-2v3h-3v2h5v-5zM7 9h3V7H5v5h2V9zm14-6H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16.01H3V4.98h18v14.03z"
+          />
         </svg>
       </div>
       <span class="text-sm">Preview will appear here</span>
@@ -160,10 +164,7 @@ const errorMessage = computed(() => {
         v-if="isRendering && hasImage"
         class="absolute top-2 right-2 inline-flex items-center gap-1.5 rounded-md-full bg-surface/80 px-2.5 py-1 text-xs font-medium text-on-surface shadow-md-elev-1 backdrop-blur-md"
       >
-        <span
-          class="h-1.5 w-1.5 animate-pulse rounded-full bg-primary"
-          aria-hidden="true"
-        />
+        <span class="h-1.5 w-1.5 animate-pulse rounded-full bg-primary" aria-hidden="true" />
         rendering
       </div>
     </Transition>

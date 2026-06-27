@@ -126,10 +126,10 @@ watch(
           <Icon
             name="palette"
             :size="14"
-            class="text-white mix-blend-difference opacity-70 transition-opacity group-hover:opacity-100"
+            class="text-white opacity-70 mix-blend-difference transition-opacity group-hover:opacity-100"
           />
         </span>
-        <span class="font-mono text-sm uppercase tracking-wider text-on-surface tabular-nums">
+        <span class="font-mono text-sm tracking-wider text-on-surface uppercase tabular-nums">
           {{ solidColor }}
         </span>
         <input
@@ -143,7 +143,7 @@ watch(
       </button>
 
       <div v-if="editor.extractedColors.length > 0" class="flex flex-col gap-2">
-        <span class="text-xs font-medium uppercase tracking-wider text-on-surface-variant">
+        <span class="text-xs font-medium tracking-wider text-on-surface-variant uppercase">
           {{ t('fill.solid.from_image') }}
         </span>
         <div class="flex flex-wrap gap-2.5">
@@ -185,7 +185,7 @@ watch(
       <div class="flex items-center justify-between">
         <label
           for="blur-slider"
-          class="text-xs font-medium uppercase tracking-wider text-on-surface-variant"
+          class="text-xs font-medium tracking-wider text-on-surface-variant uppercase"
         >
           {{ t('fill.blur.intensity') }}
         </label>

@@ -91,7 +91,9 @@ const hasImage = computed(() => editor.source !== null)
       </M3Card>
     </template>
 
-    <footer class="mt-auto flex flex-col items-center gap-1 pt-6 text-center text-xs text-on-surface-variant/70">
+    <footer
+      class="mt-auto flex flex-col items-center gap-1 pt-6 text-center text-xs text-on-surface-variant/70"
+    >
       <span>No Crop · {{ t('app.tagline') }}</span>
     </footer>
   </main>

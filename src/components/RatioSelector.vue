@@ -202,7 +202,9 @@ function onInputChange() {
           />
         </label>
 
-        <span class="pt-4 text-lg font-medium text-on-surface-variant/70" aria-hidden="true">×</span>
+        <span class="pt-4 text-lg font-medium text-on-surface-variant/70" aria-hidden="true"
+          >×</span
+        >
 
         <!-- Height input -->
         <label class="flex flex-col gap-1 text-xs text-on-surface-variant">

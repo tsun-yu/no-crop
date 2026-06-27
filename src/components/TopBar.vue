@@ -94,11 +94,7 @@ function onLocaleChange(v: string | number) {
         <Icon name="shield" :size="16" />
         <span>{{ t('app.privacy.chip') }}</span>
       </span>
-      <span
-        v-if="themeHint"
-        class="text-on-surface-variant/70"
-        aria-live="polite"
-      >
+      <span v-if="themeHint" class="text-on-surface-variant/70" aria-live="polite">
         {{ themeHint }} · {{ effective }}
       </span>
     </div>

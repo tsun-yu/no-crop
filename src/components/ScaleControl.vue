@@ -27,7 +27,7 @@ const percent = computed({
       <label
         id="scale-label"
         for="scale-slider"
-        class="text-xs font-medium uppercase tracking-wider text-on-surface-variant"
+        class="text-xs font-medium tracking-wider text-on-surface-variant uppercase"
       >
         {{ t('scale.label') }}
       </label>

@@ -186,9 +186,7 @@ function onPicked(e: Event) {
     </div>
 
     <!-- Supported formats hint -->
-    <p
-      class="relative font-mono text-[11px] tracking-wider text-on-surface-variant/70 uppercase"
-    >
+    <p class="relative font-mono text-[11px] tracking-wider text-on-surface-variant/70 uppercase">
       JPEG · PNG · WebP · HEIC
     </p>
 

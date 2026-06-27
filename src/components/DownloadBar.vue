@@ -93,7 +93,7 @@ function onReset() {
     <div
       class="flex flex-wrap items-center justify-between gap-2 rounded-md-lg bg-surface-container-low px-4 py-3"
     >
-      <span class="text-xs font-medium uppercase tracking-wider text-on-surface-variant">
+      <span class="text-xs font-medium tracking-wider text-on-surface-variant uppercase">
         {{ t('export.output_size') }}
       </span>
       <div class="flex items-center gap-2">
@@ -103,7 +103,7 @@ function onReset() {
           {{ exportPx.w.toLocaleString() }} × {{ exportPx.h.toLocaleString() }}
         </span>
         <span
-          class="inline-flex items-center rounded-md-full bg-secondary-container px-2.5 py-1 text-xs font-semibold uppercase text-on-secondary-container"
+          class="inline-flex items-center rounded-md-full bg-secondary-container px-2.5 py-1 text-xs font-semibold text-on-secondary-container uppercase"
         >
           {{ settings.defaultFormat }}
         </span>
